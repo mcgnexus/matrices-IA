@@ -21,7 +21,26 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Enviar la matriz al LLM Kimi K2
+    // Crear prompt con la operación específica
+    let prompt = '';
+    if (operation && operation.trim() !== '') {
+      prompt = `Dada la siguiente matriz: ${JSON.stringify(matrix)}
+
+Por favor, calcula la siguiente operación: ${operation}
+
+Proporciona:
+1. El resultado paso a paso
+2. La matriz resultante (si aplica)
+3. Explicación del procedimiento
+
+Si la operación no es posible (por ejemplo, matriz singular para inversa), explica por qué.`;
+    } else {
+      prompt = `Analiza esta matriz: ${JSON.stringify(matrix)}
+
+Proporciona información relevante sobre sus propiedades (determinante, rango, si es simétrica, etc.)`;
+    }
+
+    // Enviar al LLM Kimi K2
     const response = await fetch(`${API_ENDPOINT}/chat/completions`, {
       method: 'POST',
       headers: {
@@ -30,8 +49,11 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'moonshotai/kimi-k2',
-        messages: [{ role: 'user', content: `Procesar esta matriz: ${JSON.stringify(matrix)}` }],
-        max_tokens: 500,
+        messages: [{ 
+          role: 'user', 
+          content: prompt 
+        }],
+        max_tokens: 1000,
       })
     });
 
@@ -42,8 +64,12 @@ export default async function handler(req, res) {
     const data = await response.json();
     const llmResponse = data.choices?.[0]?.message?.content || 'No se obtuvo respuesta del LLM';
 
-    // Devolver la matriz y la respuesta del LLM
-    res.status(200).json({ matrix, llm_response: llmResponse });
+    // Devolver la matriz, operación y respuesta del LLM
+    res.status(200).json({ 
+      matrix, 
+      operation: operation || 'análisis general',
+      llm_response: llmResponse 
+    });
   } catch (error) {
     console.error('Error al procesar la matriz:', error);
     res.status(500).json({ error: 'Error al procesar la matriz con el LLM.' });
