@@ -1,0 +1,17 @@
+{
+  "name": "matrix-input-app",
+  "version": "1.0.0",
+  "description": "Aplicación web para entrada y procesamiento de matrices con LLM Kimi K2",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build step required for static files'",
+    "start": "vercel dev"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {},
+  "author": "Manuel Carrasco Garcia",
+  "license": "MIT"
+}
