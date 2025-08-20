@@ -1,18 +1,47 @@
 {
-  "name": "matrix-input-app",
-  "version": "1.0.0",
-  "description": "Aplicación web para entrada y procesamiento de matrices con LLM Kimi K2",
-  "main": "index.js",
+  "name": "matrix-calculator-ai",
+  "version": "1.1.0",
+  "description": "Aplicación web para cálculo de matrices con inteligencia artificial usando Kimi K2",
+  "main": "api/process-matrix.js",
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
     "build": "echo 'No build step required for static files'",
-    "start": "vercel dev"
+    "start": "vercel dev",
+    "lint": "echo 'Linting frontend code...' && npx eslint *.html",
+    "test": "echo 'No tests configured yet'",
+    "deploy": "vercel --prod"
   },
   "dependencies": {
     "node-fetch": "^3.3.2"
   },
-  "devDependencies": {},
-  "author": "Manuel Carrasco Garcia",
-  "license": "MIT"
+  "devDependencies": {
+    "@vercel/node": "^3.0.0",
+    "eslint": "^8.50.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "matrix",
+    "calculator",
+    "linear-algebra", 
+    "ai",
+    "kimi",
+    "mathematics",
+    "web-app"
+  ],
+  "author": {
+    "name": "Manuel Carrasco Garcia",
+    "email": "manuel@example.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/usuario/matrix-calculator-ai"
+  },
+  "bugs": {
+    "url": "https://github.com/usuario/matrix-calculator-ai/issues"
+  },
+  "homepage": "https://matrix-calculator-ai.vercel.app"
 }
