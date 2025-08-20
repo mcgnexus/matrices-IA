@@ -40,7 +40,7 @@ Si la operación no es posible (por ejemplo, matriz singular para inversa), expl
 Proporciona información relevante sobre sus propiedades (determinante, rango, si es simétrica, etc.)`;
     }
 
-    // Enviar al LLM Kimi K2
+    // Enviar al LLM Kimi K2 usando fetch nativo
     const response = await fetch(`${API_ENDPOINT}/chat/completions`, {
       method: 'POST',
       headers: {
@@ -48,7 +48,7 @@ Proporciona información relevante sobre sus propiedades (determinante, rango, s
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'moonshotai/kimi-k2',
+        model: 'moonshot-v1-8k',
         messages: [{ 
           role: 'user', 
           content: prompt 
@@ -58,7 +58,9 @@ Proporciona información relevante sobre sus propiedades (determinante, rango, s
     });
 
     if (!response.ok) {
-      throw new Error(`Error en la API: ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('Error de API:', response.status, errorText);
+      throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
@@ -72,6 +74,9 @@ Proporciona información relevante sobre sus propiedades (determinante, rango, s
     });
   } catch (error) {
     console.error('Error al procesar la matriz:', error);
-    res.status(500).json({ error: 'Error al procesar la matriz con el LLM.' });
+    res.status(500).json({ 
+      error: 'Error al procesar la matriz con el LLM.',
+      details: error.message 
+    });
   }
 }
