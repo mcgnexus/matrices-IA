@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
   // Solo permitir solicitudes POST
@@ -24,23 +24,12 @@ export default async function handler(req, res) {
     // Crear prompt con la operación específica
     let prompt = '';
     if (operation && operation.trim() !== '') {
-      prompt = `Dada la siguiente matriz: ${JSON.stringify(matrix)}
-
-Por favor, calcula la siguiente operación: ${operation}
-
-Proporciona:
-1. El resultado paso a paso
-2. La matriz resultante (si aplica)
-3. Explicación del procedimiento
-
-Si la operación no es posible (por ejemplo, matriz singular para inversa), explica por qué.`;
+      prompt = `Dada la siguiente matriz: ${JSON.stringify(matrix)}\n\nPor favor, calcula la siguiente operación: ${operation}\n\nProporciona:\n1. El resultado paso a paso\n2. La matriz resultante (si aplica)\n3. Explicación del procedimiento\n\nSi la operación no es posible (por ejemplo, matriz singular para inversa), explica por qué.`;
     } else {
-      prompt = `Analiza esta matriz: ${JSON.stringify(matrix)}
-
-Proporciona información relevante sobre sus propiedades (determinante, rango, si es simétrica, etc.)`;
+      prompt = `Analiza esta matriz: ${JSON.stringify(matrix)}\n\nProporciona información relevante sobre sus propiedades (determinante, rango, si es simétrica, etc.)`;
     }
 
-    // Enviar al LLM Kimi K2 usando fetch nativo
+    // Enviar al LLM Kimi K2
     const response = await fetch(`${API_ENDPOINT}/chat/completions`, {
       method: 'POST',
       headers: {
